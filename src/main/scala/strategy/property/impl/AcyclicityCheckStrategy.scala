@@ -1,17 +1,21 @@
 package com.yurwar
 package strategy.property.impl
 
-import entity.Relation
+import entity.{PropertyCheckResult, PropertyViolation, Relation, RelationProperty}
 import strategy.property.PropertyCheckStrategy
+
+import com.yurwar.entity.RelationProperty.Acyclicity
 
 import scala.collection.mutable
 
 class AcyclicityCheckStrategy extends PropertyCheckStrategy {
   private val antiReflexivityCheckStrategy = new AntiReflexivityCheckStrategy
 
-  override def hasProperty(relation: Relation): Boolean = {
-    antiReflexivityCheckStrategy.hasProperty(relation) && Range(0, relation.size)
+  override def check(relation: Relation): PropertyCheckResult = {
+    val present = antiReflexivityCheckStrategy.check(relation).present && Range(0, relation.size)
       .forall(idx => !cycleExistForRoot(relation, idx))
+
+    new PropertyCheckResult(false, new PropertyViolation(Acyclicity, List.empty))
   }
 
   private def cycleExistForRoot(relation: Relation, idx: Int): Boolean = {

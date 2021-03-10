@@ -1,6 +1,6 @@
 package com.yurwar
 
-import entity.{RelationClasses, RelationProperty}
+import entity.{Relation, RelationClasses, RelationProperty}
 import strategy.property.PropertyCheckStrategy
 import strategy.property.impl._
 import util.{RelationPrinter, RelationReader}
@@ -23,14 +23,14 @@ object Main {
 
     val relations = a.parseRelations()
 
-    relations.foreach(rel => {
-      propertyStrategies.foreach(propStrategy => {
-        if (propStrategy._2.hasProperty(rel)) {
-          rel.relationProperties.addOne(propStrategy._1)
-        }
-      })
-    })
+    runPropertyCheckStrategies(relations)
 
+    findClassForRelation(relations)
+
+    relations.foreach(RelationPrinter.printRelation)
+  }
+
+  private def findClassForRelation(relations: List[Relation]): Unit = {
     relations.foreach(rel => {
       RelationClasses.values.toList.sortBy(_.props.size).foreach(rc => {
         if (rc.props.forall(rel.relationProperties.contains)) {
@@ -38,7 +38,18 @@ object Main {
         }
       })
     })
+  }
 
-    relations.foreach(RelationPrinter.printRelation)
+  private def runPropertyCheckStrategies(relations: List[Relation]): Unit = {
+    relations.foreach(rel => {
+      propertyStrategies.foreach(propStrategy => {
+        val checkResult = propStrategy._2.check(rel)
+        if (checkResult.present) {
+          rel.relationProperties.addOne(propStrategy._1)
+        } else {
+          rel.propertyViolations.addOne(checkResult.propertyViolation)
+        }
+      })
+    })
   }
 }

@@ -9,7 +9,8 @@ import scala.collection.mutable.ListBuffer
 
 class Relation(val matrix: List[List[Boolean]],
                var relationClass: RelationClass = RelationClasses.Undefined,
-               val relationProperties: ListBuffer[RelationProperty] = ListBuffer.empty) {
+               val relationProperties: ListBuffer[RelationProperty] = ListBuffer.empty,
+               val propertyViolations: ListBuffer[PropertyViolation] = ListBuffer.empty) {
 
   val size: Int = {
     matrix.size

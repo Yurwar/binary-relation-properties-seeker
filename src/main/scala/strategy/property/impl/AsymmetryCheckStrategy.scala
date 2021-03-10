@@ -1,11 +1,12 @@
 package com.yurwar
 package strategy.property.impl
 
-import entity.Relation
+import entity.RelationProperty.Asymmetry
+import entity.{PropertyCheckResult, PropertyViolation, Relation}
 import strategy.property.PropertyCheckStrategy
 
 class AsymmetryCheckStrategy extends PropertyCheckStrategy {
-  override def hasProperty(relation: Relation): Boolean = {
+  override def check(relation: Relation): PropertyCheckResult = {
     for (i <- 0 until relation.size;
          j <- 0 until relation.size) {
       val upperRelation = relation.getElement(i, j)
@@ -13,16 +14,16 @@ class AsymmetryCheckStrategy extends PropertyCheckStrategy {
 
       if (i == j) {
         if (upperRelation) {
-          return false
+          return new PropertyCheckResult(false, new PropertyViolation(Asymmetry, List((i, j))))
         }
       } else {
         if (upperRelation && lowerRelation) {
-          return false
+          return new PropertyCheckResult(false, new PropertyViolation(Asymmetry, List((i, j))))
         }
       }
     }
 
-    true
+    new PropertyCheckResult(true, new PropertyViolation(Asymmetry, List.empty))
   }
 }
 

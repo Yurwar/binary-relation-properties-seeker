@@ -25,6 +25,12 @@ object RelationPrinter {
     println(relation.relationClass)
 
     println
+
+    relation.propertyViolations.foreach(v => {
+      println(s"Violation for property ${v.relationProperty} in points: ${v.violationPoints.map(t => (t._1 + 1, t._2 + 1)).mkString(", ")}")
+    })
+
+    println
   }
 
 }

@@ -1,8 +1,8 @@
 package com.yurwar
 package strategy.property
 
-import entity.Relation
+import entity.{PropertyCheckResult, Relation}
 
 trait PropertyCheckStrategy {
-  def hasProperty(relation: Relation): Boolean
+  def check(relation: Relation): PropertyCheckResult
 }

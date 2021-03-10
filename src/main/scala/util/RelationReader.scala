@@ -11,7 +11,7 @@ class RelationReader {
   val SPACE_SPLIT_REGEX = "\\s{2}"
 
   def parseRelations(): List[Relation] = {
-    val rawContent = readFile("src/main/resources/binary_relations.txt")
+    val rawContent = readFile("src/main/resources/binary_relations_task1.txt")
 
     val rawMatrices = List.from(rawContent.split(RAW_CONTENT_SPLIT_REGEX))
       .filter(str => !str.isBlank)
