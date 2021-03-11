@@ -1,14 +1,14 @@
 package com.yurwar
 package entity
 
-import entity.RelationProperty.{Acyclicity, AntiReflexivity, AntiSymmetry, Asymmetry, NegativeTransitivity, Reflexivity, RelationProperty, Symmetry, Transitivity}
+import entity.RelationProperty.{AntiReflexivity, AntiSymmetry, Asymmetry, NegativeTransitivity, Reflexivity, RelationProperty, Symmetry, Transitivity}
 
 object RelationClasses extends Enumeration {
   type RelationClass = Value
 
   val Undefined = RelationClassProperties(List.empty)
   val Equivalence = RelationClassProperties(List(Reflexivity, Symmetry, Transitivity))
-  val StrictOrder = RelationClassProperties(List(AntiReflexivity, Asymmetry, Transitivity, Acyclicity))
+  val StrictOrder = RelationClassProperties(List(AntiReflexivity, Asymmetry, Transitivity))
   val NotStrictOrder = RelationClassProperties(List(Reflexivity, AntiSymmetry, Transitivity))
   val QuasiOrder = RelationClassProperties(List(Reflexivity, Transitivity))
   val WeakOrdering = RelationClassProperties(List(Asymmetry, Transitivity, NegativeTransitivity))

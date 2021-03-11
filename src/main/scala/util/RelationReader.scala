@@ -6,12 +6,12 @@ import entity.Relation
 import scala.io.Source
 
 class RelationReader {
-  val RAW_CONTENT_SPLIT_REGEX = "№[0-9]* -{13}\\r?\\n"
-  val LINE_SPLIT_REGEX = "\\r?\\n"
-  val SPACE_SPLIT_REGEX = "\\s{2}"
+  private val RAW_CONTENT_SPLIT_REGEX = "№[0-9]* -{13}\\r?\\n"
+  private val LINE_SPLIT_REGEX = "\\r?\\n"
+  private val SPACE_SPLIT_REGEX = "\\s{2}"
 
-  def parseRelations(): List[Relation] = {
-    val rawContent = readFile("src/main/resources/binary_relations_task1.txt")
+  def parseRelations(fileName: String): List[Relation] = {
+    val rawContent = readFile(fileName)
 
     val rawMatrices = List.from(rawContent.split(RAW_CONTENT_SPLIT_REGEX))
       .filter(str => !str.isBlank)
