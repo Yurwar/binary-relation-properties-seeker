@@ -1,67 +1,60 @@
 package com.yurwar
 package common.strategy.property.impl
 
-import common.entity.RelationProperty.Acyclicity
-import common.entity.{PropertyCheckResult, PropertyViolation, Relation}
+import common.entity.{PropertyCheckResult, PropertyViolation, Relation, RelationProperty}
 import common.strategy.property.PropertyCheckStrategy
 
-import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 
 class AcyclicityCheckStrategy extends PropertyCheckStrategy {
-  private val antiReflexivityCheckStrategy = new AntiReflexivityCheckStrategy
 
   override def check(relation: Relation): PropertyCheckResult = {
-    val present = antiReflexivityCheckStrategy.check(relation).present && Range(0, relation.size)
-      .forall(idx => !cycleExistForRoot(relation, idx))
+    val matrixAdj = relation.matrix.indices.map(idx => relation.getLowerSection(idx)).toList
 
-    new PropertyCheckResult(false, new PropertyViolation(Acyclicity, List.empty))
+    //TODO Populate violations for acyclicity
+    new PropertyCheckResult(!isCyclic(matrixAdj), new PropertyViolation(RelationProperty.Acyclicity, List.empty))
   }
 
-  private def cycleExistForRoot(relation: Relation, idx: Int): Boolean = {
-    val solutionStack: mutable.Stack[Int] = new mutable.Stack[Int]()
-    val variantsStack: mutable.Stack[mutable.Stack[Int]] = new mutable.Stack[mutable.Stack[Int]]()
+  def isCyclic(matrix: List[List[Int]]): Boolean = {
+    def isCyclicNested(el: Int, matrix: List[List[Int]], visited: ListBuffer[Boolean], recStack: ListBuffer[Boolean]): Boolean = {
+      if (recStack(el))
+        return true
 
-    solutionStack.push(idx)
-    variantsStack.push(createStack(relation.getLowerSection(idx)))
+      if (visited(el))
+        return false
 
-    while (!isStackCycled(solutionStack, idx) && solutionStack.nonEmpty) {
-      val maybeIndex = getNextElement(variantsStack)
-      if (maybeIndex.isDefined) {
-        addNextVariants(relation, variantsStack, solutionStack, maybeIndex.get, idx)
-      } else {
-        solutionStack.pop()
+      visited(el) = true
+      recStack(el) = true
+
+      val children = matrix(el)
+
+      for (child <- children) {
+        if (isCyclicNested(child, matrix, visited, recStack))
+          return true
       }
+
+      recStack(el) = false
+
+      false
     }
 
-    isStackCycled(solutionStack, idx)
+    val visited: ListBuffer[Boolean] = createEmptyList(matrix.size)
+    val recStack: ListBuffer[Boolean] = createEmptyList(matrix.size)
+
+    for (el <- matrix.indices) {
+      if (isCyclicNested(el, matrix, visited, recStack))
+        return true
+    }
+
+    false
   }
 
-  private def getNextElement(variantsStack: mutable.Stack[mutable.Stack[Int]]): Option[Int] = {
-    Option(variantsStack.pop())
-      .filter(_.nonEmpty)
-      .map(getNextElementFromStack(variantsStack, _))
-  }
+  def createEmptyList(size: Int): ListBuffer[Boolean] = {
+    val res: ListBuffer[Boolean] = ListBuffer.empty
 
-  private def getNextElementFromStack(variantsStack: mutable.Stack[mutable.Stack[Int]], stack: mutable.Stack[Int]) = {
-    val res = stack.pop()
-    variantsStack.push(createStack(stack.toList))
+    for (_ <- 0 until size)
+      res.addOne(false)
+
     res
-  }
-
-  private def addNextVariants(relation: Relation, variantsStack: mutable.Stack[mutable.Stack[Int]],
-                              solutionStack: mutable.Stack[Int], index: Int, rootIndex: Int): Unit = {
-    solutionStack.push(index)
-    variantsStack.push(createStack(relation.getLowerSection(index)
-      .filter(i => !solutionStack.contains(i) || i == rootIndex)))
-  }
-
-  private def createStack(seq: Seq[Int]): mutable.Stack[Int] = {
-    val res: mutable.Stack[Int] = new mutable.Stack[Int]
-    seq.foreach(res.push)
-    res
-  }
-
-  private def isStackCycled(solutionStack: mutable.Stack[Int], idx: Int): Boolean = {
-    solutionStack.lastIndexOf(idx) > 0
   }
 }
