@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="sbt 1" modules="binary-relation-properties-seeker" />
+    <profile name="sbt 1" modules="binary-relation-properties-seeker,decision-support-system-practise,decision-support-system-practise_2623" />
   </component>
 </project>

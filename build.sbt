@@ -1,4 +1,4 @@
-name := "binary-relation-properties-seeker"
+name := "decision-support-system-practise"
 
 version := "0.1"
 
