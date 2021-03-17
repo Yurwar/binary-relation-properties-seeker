@@ -11,12 +11,4 @@ abstract class AbstractOptimizationStrategy(val requiredProperties: Set[Relation
     requiredProperties.subsetOf(rel.relationProperties.toSet) &&
       rel.relationProperties.forall(prop => !forbiddenProperties.contains(prop))
   }
-
-  def getOptimalElements(rel: Relation): List[Int] = {
-    rel.matrix.indices
-      .filter(isElementOptimal(_, rel))
-      .toList
-  }
-
-  protected def isElementOptimal(el: Int, rel: Relation): Boolean
 }

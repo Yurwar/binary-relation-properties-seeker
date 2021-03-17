@@ -3,9 +3,9 @@ package common.strategy.optimization.impl.domination
 
 import common.entity.Relation
 import common.entity.RelationProperty.Asymmetry
-import common.strategy.optimization.AbstractOptimizationStrategy
+import common.strategy.optimization.AbstractDominationBlockingOptimizationStrategy
 
-class AsymmetryDominationOptimizationStrategy extends AbstractOptimizationStrategy(Set(Asymmetry), Set.empty) {
+class AsymmetryDominationOptimizationStrategy extends AbstractDominationBlockingOptimizationStrategy(Set(Asymmetry), Set.empty) {
 
   override protected def isElementOptimal(el: Int, rel: Relation): Boolean = {
     rel.getLowerSection(el)

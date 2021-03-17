@@ -6,7 +6,7 @@ import common.entity.Relation
 import scala.io.Source
 
 class RelationReader {
-  private val RAW_CONTENT_SPLIT_REGEX = "№[0-9]* -{13}\\r?\\n"
+  private val RAW_CONTENT_SPLIT_REGEX = ".*-+\\r?\\n"
   private val LINE_SPLIT_REGEX = "\\r?\\n"
   private val SPACE_SPLIT_REGEX = "\\s{2}"
 
