@@ -2,10 +2,12 @@ package com.yurwar
 package common.util
 
 import common.entity.RelationProperty._
+import common.strategy.criteria.RelationBuildingStrategy
+import common.strategy.criteria.impl._
 import common.strategy.optimization.OptimizationStrategy
 import common.strategy.optimization.impl.blocking._
 import common.strategy.optimization.impl.domination._
-import common.strategy.optimization.impl.k.{AbstractKOptimizationStrategy, KMaxOptimizationStrategy, KOptOptimizationStrategy}
+import common.strategy.optimization.impl.k.{KMaxOptimizationStrategy, KOptOptimizationStrategy}
 import common.strategy.optimization.impl.nm.NmOptimizationStrategy
 import common.strategy.property.PropertyCheckStrategy
 import common.strategy.property.impl._
@@ -44,5 +46,13 @@ object Utils {
     "K3 Opt Optimization" -> new KOptOptimizationStrategy(3),
     "K4 Max Optimization" -> new KMaxOptimizationStrategy(4),
     "K4 Opt Optimization" -> new KOptOptimizationStrategy(4),
+  )
+
+  val RelationBuildingStrategies: mutable.LinkedHashMap[String, RelationBuildingStrategy] = mutable.LinkedHashMap(
+    "Pareto Relation" -> new ParetoRelationBuildingStrategy,
+    "Majority Relation" -> new MajorityRelationBuildingStrategy,
+    "Lexicography Relation" -> new LexicographyRelationBuildingStrategy,
+    "Berezovsky Relation" -> new BerezovskyRelationBuildingStrategy,
+    "Podinovsky Relation" -> new PodinovskyRelationBuildingStrategy
   )
 }

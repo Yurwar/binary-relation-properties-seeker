@@ -1,9 +1,9 @@
 package com.yurwar
 package common.util
 
-import common.entity.Relation
+import common.entity.{Criteria, Relation}
 
-object RelationPrinter {
+object ConsolePrinter {
 
   def printRelation(relation: Relation): Unit = {
     printRelationMatrix(relation)
@@ -45,6 +45,16 @@ object RelationPrinter {
     relation.propertyViolations.foreach(v => {
       println(s"Violation for property ${v.relationProperty} in points: ${v.violationPoints.map(t => (t._1 + 1, t._2 + 1)).mkString(", ")}")
     })
+
+    println
+  }
+
+  def printCriteriaRating(criteria: Criteria): Unit = {
+    println("Alternatives rating: ")
+
+    for (i <- criteria.alternativesRating.indices) {
+      println(criteria.alternativesRating(i).mkString(" "))
+    }
 
     println
   }

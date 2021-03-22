@@ -4,7 +4,7 @@ package cp2.solver
 import common.entity.Relation
 import common.service.RelationService
 import common.strategy.optimization.OptimizationStrategy
-import common.util.RelationPrinter
+import common.util.ConsolePrinter
 
 import scala.collection.mutable
 
@@ -14,9 +14,9 @@ abstract class AbstractOptimizationSolver(relationService: RelationService) exte
 
   protected def optimizeRelations(relations: List[Relation], optStrategies: mutable.LinkedHashMap[String, OptimizationStrategy]): Unit = {
     relations.foreach(rel => {
-      RelationPrinter.printRelationMatrix(rel)
-      RelationPrinter.printRelationProperties(rel)
-      RelationPrinter.printRelationClass(rel)
+      ConsolePrinter.printRelationMatrix(rel)
+      ConsolePrinter.printRelationProperties(rel)
+      ConsolePrinter.printRelationClass(rel)
       optStrategies
         .toList
         .filter(nameToStrategy => nameToStrategy._2.isApplicable(rel))

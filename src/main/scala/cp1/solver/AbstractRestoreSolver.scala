@@ -4,7 +4,7 @@ package cp1.solver
 import common.entity.Relation
 import common.entity.RelationClasses.RelationClass
 import common.strategy.property.PropertyCheckStrategy
-import common.util.{RelationPrinter, Utils}
+import common.util.{ConsolePrinter, Utils}
 
 abstract class AbstractRestoreSolver extends Solver {
 
@@ -14,7 +14,7 @@ abstract class AbstractRestoreSolver extends Solver {
       println(s"Start restoring property $prop for relation")
       restorePropertyForRelation(relation, propertyCheckStrategy)
       println(s"After restoring $prop")
-      RelationPrinter.printRelationMatrix(relation)
+      ConsolePrinter.printRelationMatrix(relation)
     })
   }
 

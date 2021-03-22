@@ -2,13 +2,13 @@ package com.yurwar
 package cp1.solver
 
 import common.entity.{Relation, RelationClasses}
-import common.util.{RelationPrinter, RelationReader, Utils}
+import common.util.{ConsolePrinter, TaskFileReader, Utils}
 
 class RelationClassSeekSolver extends Solver {
   val taskFileName = "src/main/resources/cp1/binary_relations_task1.txt"
 
   override def solve(): Unit = {
-    val a: RelationReader = new RelationReader
+    val a: TaskFileReader = new TaskFileReader
 
     val relations = a.parseRelations(taskFileName)
 
@@ -16,7 +16,7 @@ class RelationClassSeekSolver extends Solver {
 
     findClassForRelation(relations)
 
-    relations.foreach(RelationPrinter.printRelation)
+    relations.foreach(ConsolePrinter.printRelation)
   }
 
   private def findClassForRelation(relations: List[Relation]): Unit = {
