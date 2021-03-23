@@ -1,7 +1,7 @@
 package com.yurwar
 package common.util
 
-import common.entity.{Criteria, Relation}
+import common.entity.{Criteria, Relation, SimpleCriteria}
 
 object ConsolePrinter {
 
@@ -57,5 +57,15 @@ object ConsolePrinter {
     }
 
     println
+  }
+
+  def printIndexMatrix(idxType: String, index: List[List[Double]]): Unit = {
+    println(idxType + " index:")
+
+    for (i <- index.indices) {
+      println(index(i).map("%.3f".format(_)).mkString(" "))
+    }
+
+    println()
   }
 }

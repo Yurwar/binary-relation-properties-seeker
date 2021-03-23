@@ -12,6 +12,9 @@ import common.strategy.optimization.impl.nm.NmOptimizationStrategy
 import common.strategy.property.PropertyCheckStrategy
 import common.strategy.property.impl._
 
+import com.yurwar.common.strategy.electre.ElectreIndexBuildingStrategy
+import com.yurwar.common.strategy.electre.impl.{ElectreConcordanceIndexBuildingStrategy, ElectreDiscordanceIndexBuildingStrategy}
+
 import scala.collection.mutable
 
 object Utils {
@@ -54,5 +57,10 @@ object Utils {
     "Lexicography Relation" -> new LexicographyRelationBuildingStrategy,
     "Berezovsky Relation" -> new BerezovskyRelationBuildingStrategy,
     "Podinovsky Relation" -> new PodinovskyRelationBuildingStrategy
+  )
+
+  val IndexBuildingStrategies: Map[String, ElectreIndexBuildingStrategy] = Map(
+    "C" -> new ElectreConcordanceIndexBuildingStrategy,
+    "D" -> new ElectreDiscordanceIndexBuildingStrategy
   )
 }

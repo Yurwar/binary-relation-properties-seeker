@@ -14,7 +14,7 @@ class RelationByCriteriaSolver(relationService: RelationService) extends Solver 
 
   override def solve(): Unit = {
     val taskFileReader: TaskFileReader = new TaskFileReader
-    val resultFileWriter: ResultFileWriter = new ResultFileWriter
+    val resultFileWriter: ResultFileWriter = new ResultFileWriter(OutputFileName)
 
     val criteria = taskFileReader.parseCriteria(InputFileName)
 
@@ -34,7 +34,7 @@ class RelationByCriteriaSolver(relationService: RelationService) extends Solver 
       strategyRelation._2
     }).toList
 
-    resultFileWriter.writeRelations(OutputFileName, relations)
+    resultFileWriter.writeRelations(relations)
 
   }
 

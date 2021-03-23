@@ -1,7 +1,7 @@
 package com.yurwar
 package common.util
 
-import common.entity.{Criteria, Relation}
+import common.entity.{ElectreCriteria, Relation, SimpleCriteria}
 
 import scala.io.Source
 
@@ -29,17 +29,11 @@ class TaskFileReader {
     }).map(matrix => new Relation(matrix))
   }
 
-  def parseCriteria(fileName: String): Criteria = {
+  def parseCriteria(fileName: String): SimpleCriteria = {
     val criteriaRawParts = readFile(fileName)
       .split("\\r?\\n\\r?\\n")
 
-    val criteriaRating = criteriaRawParts(0)
-      .split(LINE_SPLIT_REGEX)
-      .map(criterionRating => {
-        criterionRating.trim.split(" ")
-          .filter(_.nonEmpty)
-          .map(_.toInt).toList
-      }).toList
+    val criteriaRating = extractCriteriaRating(criteriaRawParts)
 
     val criteriaOrder = criteriaRawParts(1)
       .split(" ?> ?")
@@ -59,7 +53,38 @@ class TaskFileReader {
           .toList
       }).toList
 
-    new Criteria(criteriaRating, criteriaOrder, criteriaGroupOrder)
+    new SimpleCriteria(criteriaRating, criteriaOrder, criteriaGroupOrder)
+  }
+
+  private def extractCriteriaRating(criteriaRawParts: Array[String]) = {
+    val criteriaRating = criteriaRawParts(0)
+      .split(LINE_SPLIT_REGEX)
+      .map(criterionRating => {
+        criterionRating.trim.split(" ")
+          .filter(_.nonEmpty)
+          .map(_.toInt).toList
+      }).toList
+    criteriaRating
+  }
+
+  def parseElectreCriteria(fileName: String): ElectreCriteria = {
+    val criteriaRawParts = readFile(fileName)
+      .split("\\r?\\n\\r?\\n")
+
+    val criteriaRating = extractCriteriaRating(criteriaRawParts)
+
+    val criteriaWeights = criteriaRawParts(1)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.toInt)
+      .toList
+
+    val thresholds = criteriaRawParts(2)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.toDouble)
+
+    ElectreCriteria(criteriaRating, criteriaWeights, thresholds(0), thresholds(1))
   }
 
   private def readFile(filename: String): String = {

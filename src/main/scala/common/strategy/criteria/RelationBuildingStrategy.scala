@@ -1,8 +1,8 @@
 package com.yurwar
 package common.strategy.criteria
 
-import common.entity.{Criteria, Relation}
+import common.entity.{SimpleCriteria, Relation}
 
 trait RelationBuildingStrategy {
-  def buildByCriteria(criteria: Criteria): Relation
+  def buildByCriteria(criteria: SimpleCriteria): Relation
 }

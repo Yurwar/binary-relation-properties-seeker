@@ -1,7 +1,7 @@
 package com.yurwar
 package common.strategy.criteria.impl
 
-import common.entity.{Criteria, Relation}
+import common.entity.{SimpleCriteria, Relation}
 import common.strategy.criteria.RelationBuildingStrategy
 import cp2.entity.{BerezovskyRelationSystem, ParetoRelationSystem}
 
@@ -9,7 +9,7 @@ import scala.annotation.tailrec
 
 class BerezovskyRelationBuildingStrategy extends RelationBuildingStrategy {
 
-  override def buildByCriteria(criteria: Criteria): Relation = {
+  override def buildByCriteria(criteria: SimpleCriteria): Relation = {
     val paretoRelationSystems = criteria.quasiAscCriterionGroupOrder
       .map(equalCriteria => buildParetoRelationSystem(equalCriteria, criteria))
 
@@ -18,7 +18,7 @@ class BerezovskyRelationBuildingStrategy extends RelationBuildingStrategy {
     new Relation(berezovskyRelationSystem.p)
   }
 
-  private def buildParetoRelationSystem(equalCriteria: List[Int], criteria: Criteria): ParetoRelationSystem = {
+  private def buildParetoRelationSystem(equalCriteria: List[Int], criteria: SimpleCriteria): ParetoRelationSystem = {
     val paretoRelationBuildChain = buildParetoRelation(equalCriteria, criteria)(_: List[Int] => Boolean)
 
     val paretoPRelation = paretoRelationBuildChain(deltaSign => deltaSign.contains(1) && deltaSign.forall(_ >= 0))
@@ -30,7 +30,7 @@ class BerezovskyRelationBuildingStrategy extends RelationBuildingStrategy {
       paretoNRelation)
   }
 
-  private def buildParetoRelation(equalCriteria: List[Int], criteria: Criteria)(checkParetoProperty: List[Int] => Boolean): List[List[Boolean]] = {
+  private def buildParetoRelation(equalCriteria: List[Int], criteria: SimpleCriteria)(checkParetoProperty: List[Int] => Boolean): List[List[Boolean]] = {
     criteria.alternativesRating.indices
       .map(row => criteria.alternativesRating.indices.map(col => {
         val deltaSign = equalCriteria.map(criterionIdx => {
