@@ -10,4 +10,6 @@ trait RelationService {
   def findClassForRelation(relation: Relation): RelationClass
 
   def findPropertiesForRelation(relation: Relation): List[RelationProperty]
+
+  def fulfillRelationFields(relation: Relation): Relation
 }

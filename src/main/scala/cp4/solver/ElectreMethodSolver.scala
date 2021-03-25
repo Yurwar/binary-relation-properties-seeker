@@ -25,10 +25,8 @@ class ElectreMethodSolver extends Solver {
   }
 
   def solveFullTaskInternal(criteria: ElectreCriteria): String = {
-    var relation = electreRelationBuildingStrategy.buildByCriteria(criteria)
-    relation.relationProperties.addAll(relationService.findPropertiesForRelation(relation))
-
-    relation = new Relation(relation.matrix, relationService.findClassForRelation(relation), relation.relationProperties)
+    val relation = relationService
+      .fulfillRelationFields(electreRelationBuildingStrategy.buildByCriteria(criteria))
 
     buildResultString(criteria, relation)
   }

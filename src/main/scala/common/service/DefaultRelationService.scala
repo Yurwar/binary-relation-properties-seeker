@@ -35,4 +35,10 @@ class DefaultRelationService extends RelationService {
     })
     props.toList
   }
+
+  override def fulfillRelationFields(relation: Relation): Relation = {
+    relation.relationProperties.addAll(findPropertiesForRelation(relation))
+
+    new Relation(relation.matrix, findClassForRelation(relation), relation.relationProperties)
+  }
 }
