@@ -1,7 +1,7 @@
 package com.yurwar
 package common.util
 
-import common.entity.{ElectreCriteria, Relation, SimpleCriteria}
+import common.entity.{BenefitCriterion, CostCriterion, ElectreCriteria, Relation, SimpleCriteria, TopsisCriteria}
 
 import scala.io.Source
 
@@ -76,7 +76,7 @@ class TaskFileReader {
     val criteriaWeights = criteriaRawParts(1)
       .split(" ")
       .filter(_.nonEmpty)
-      .map(_.toInt)
+      .map(_.toDouble)
       .toList
 
     val thresholds = criteriaRawParts(2)
@@ -85,6 +85,30 @@ class TaskFileReader {
       .map(_.toDouble)
 
     ElectreCriteria(criteriaRating, criteriaWeights, thresholds(0), thresholds(1))
+  }
+
+  def parseTopsisCriteria(fileName: String): TopsisCriteria = {
+    val criteriaRawParts = readFile(fileName)
+      .split("\\r?\\n\\r?\\n")
+
+    val criteriaRating = extractCriteriaRating(criteriaRawParts)
+
+    val criteriaWeights = criteriaRawParts(1)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.toDouble)
+      .toList
+
+    val criteriaTypes = criteriaRawParts(2)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.trim)
+      .map {
+        case "max" => BenefitCriterion()
+        case "min" => CostCriterion()
+      }.toList
+
+    TopsisCriteria(criteriaRating, criteriaWeights, criteriaTypes)
   }
 
   private def readFile(filename: String): String = {

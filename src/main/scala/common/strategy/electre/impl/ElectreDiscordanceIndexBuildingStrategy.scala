@@ -36,7 +36,7 @@ class ElectreDiscordanceIndexBuildingStrategy extends AbstractElectreIndexBuildi
     singleCriterionValues.max - singleCriterionValues.min
   }
 
-  private def findMaxWeightedDiff(xRatings: List[Int], yRatings: List[Int], weights: List[Int]): Int = {
+  private def findMaxWeightedDiff(xRatings: List[Int], yRatings: List[Int], weights: List[Double]): Double = {
     findSuitableCriteriaIndexes(xRatings, yRatings)
       .map(tup => {
         val xyTup = tup._1

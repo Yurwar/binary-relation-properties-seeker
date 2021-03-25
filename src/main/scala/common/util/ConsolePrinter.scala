@@ -1,7 +1,7 @@
 package com.yurwar
 package common.util
 
-import common.entity.{Criteria, Relation, SimpleCriteria}
+import common.entity.{Criteria, MultiCriteria, Relation, TopsisCriteria}
 
 object ConsolePrinter {
 
@@ -59,11 +59,29 @@ object ConsolePrinter {
     println
   }
 
+  def printCriteriaWeights(criteria: MultiCriteria): Unit = {
+    println(s"Weights: (${criteria.weights.mkString(", ")})")
+  }
+
+  def printCriteriaTypes(criteria: TopsisCriteria): Unit = {
+    println(s"Types: (${criteria.criterionTypes.mkString(", ")})")
+  }
+
   def printIndexMatrix(idxType: String, index: List[List[Double]]): Unit = {
     println(idxType + " index:")
 
     for (i <- index.indices) {
       println(index(i).map("%.3f".format(_)).mkString(" "))
+    }
+
+    println()
+  }
+
+  def printMatrix(matrix: List[List[Double]]): Unit = {
+    println()
+
+    for (i <- matrix.indices) {
+      println(matrix(i).map("%.3f".format(_)).mkString(" "))
     }
 
     println()
