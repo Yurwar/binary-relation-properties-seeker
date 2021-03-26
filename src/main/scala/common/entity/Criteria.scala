@@ -18,3 +18,8 @@ sealed case class ElectreCriteria(override val alternativesRating: List[List[Int
 sealed case class TopsisCriteria(override val alternativesRating: List[List[Int]],
                                  override val weights: List[Double],
                                  criterionTypes: List[CriterionType]) extends MultiCriteria(alternativesRating, weights)
+
+sealed case class VikorCriteria(override val alternativesRating: List[List[Int]],
+                                override val weights: List[Double],
+                                criterionTypes: List[CriterionType],
+                                strategyWeight: Double) extends MultiCriteria(alternativesRating, weights)

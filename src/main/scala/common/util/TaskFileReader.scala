@@ -1,7 +1,7 @@
 package com.yurwar
 package common.util
 
-import common.entity.{BenefitCriterion, CostCriterion, ElectreCriteria, Relation, SimpleCriteria, TopsisCriteria}
+import common.entity._
 
 import scala.io.Source
 
@@ -118,4 +118,36 @@ class TaskFileReader {
 
     rawContent
   }
+
+  def parseVikorCriteria(fileName: String): VikorCriteria = {
+    val criteriaRawParts = readFile(fileName)
+      .split("\\r?\\n\\r?\\n")
+
+    val criteriaRating = extractCriteriaRating(criteriaRawParts)
+
+    val criteriaWeights = criteriaRawParts(1)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.toDouble)
+      .toList
+
+    val criteriaTypes = criteriaRawParts(2)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.trim)
+      .map {
+        case "max" => BenefitCriterion()
+        case "min" => CostCriterion()
+      }.toList
+
+    val strategyWeight = criteriaRawParts(3)
+      .split(" ")
+      .filter(_.nonEmpty)
+      .map(_.trim)
+      .map(_.toDouble)
+      .head
+
+    VikorCriteria(criteriaRating, criteriaWeights, criteriaTypes, strategyWeight)
+  }
+
 }

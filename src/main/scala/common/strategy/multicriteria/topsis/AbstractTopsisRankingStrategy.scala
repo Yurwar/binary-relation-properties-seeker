@@ -1,10 +1,10 @@
 package com.yurwar
-package common.strategy.multicriteria
+package common.strategy.multicriteria.topsis
 
-import common.entity.{BenefitCriterion, CostCriterion, CriterionType, TopsisCriteria}
+import common.entity.{CriterionType, TopsisCriteria}
 import common.util.ConsolePrinter
 
-abstract class TopsisRankingStrategy extends MultiCriteriaRankingStrategy {
+abstract class AbstractTopsisRankingStrategy extends TopsisRankingStrategy {
 
   override def findRankedAlternatives(criteria: TopsisCriteria): List[Int] = {
     val normalizedRating = normalizeRating(criteria.alternativesRating.map(_.map(_.toDouble)), criteria.criterionTypes)
@@ -22,26 +22,26 @@ abstract class TopsisRankingStrategy extends MultiCriteriaRankingStrategy {
     val pis = findDesiredValues(weightRating, criteria.criterionTypes)
 
     println()
-    println(s"PIS ${pis.mkString(", ")}")
+    println(s"PIS ${pis.map("%.3f".format(_)).mkString(", ")}")
 
     val nis = findWorstValues(weightRating, criteria.criterionTypes)
 
     println()
-    println(s"NIS ${nis.mkString(", ")}")
+    println(s"NIS ${nis.map("%.3f".format(_)).mkString(", ")}")
 
     val distancesToPis = calculateDistances(weightRating, pis)
 
     println()
-    println(s"Distances to PIS ${distancesToPis.mkString(", ")}")
+    println(s"Distances to PIS ${distancesToPis.map("%.3f".format(_)).mkString(", ")}")
 
     val distancesToNis = calculateDistances(weightRating, nis)
 
-    println(s"Distances to NIS ${distancesToNis.mkString(", ")}")
+    println(s"Distances to NIS ${distancesToNis.map("%.3f".format(_)).mkString(", ")}")
 
     val closeness = calculateCloseness(distancesToPis, distancesToNis)
 
     println()
-    println(s"Closeness ${closeness.mkString(", ")}")
+    println(s"Closeness ${closeness.map("%.3f".format(_)).mkString(", ")}")
 
     closeness.zipWithIndex.sortBy(_._1).reverse.map(_._2)
   }
@@ -69,29 +69,4 @@ abstract class TopsisRankingStrategy extends MultiCriteriaRankingStrategy {
 
   protected def normalizeRating(alternativesRating: List[List[Double]], criterionTypes: List[CriterionType]): List[List[Double]]
 
-  protected def findDesiredValues(alternativesRating: List[List[Double]], criterionTypes: List[CriterionType]): List[Double] = {
-    alternativesRating.head.indices.map(col => {
-      val column = alternativesRating.indices.map(row => {
-        alternativesRating(row)(col)
-      }).toList
-
-      criterionTypes(col) match {
-        case BenefitCriterion() => column.max
-        case CostCriterion() => column.min
-      }
-    }).toList
-  }
-
-  protected def findWorstValues(alternativesRating: List[List[Double]], criterionTypes: List[CriterionType]): List[Double] = {
-    alternativesRating.head.indices.map(col => {
-      val column = alternativesRating.indices.map(row => {
-        alternativesRating(row)(col)
-      }).toList
-
-      criterionTypes(col) match {
-        case BenefitCriterion() => column.min
-        case CostCriterion() => column.max
-      }
-    }).toList
-  }
 }

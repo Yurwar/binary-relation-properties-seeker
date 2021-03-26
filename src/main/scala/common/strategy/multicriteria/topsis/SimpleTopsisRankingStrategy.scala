@@ -1,8 +1,9 @@
 package com.yurwar
-package common.strategy.multicriteria
+package common.strategy.multicriteria.topsis
+
 import common.entity.CriterionType
 
-class SimpleTopsisRankingStrategy extends TopsisRankingStrategy {
+class SimpleTopsisRankingStrategy extends AbstractTopsisRankingStrategy {
   protected def normalizeRating(alternativesRating: List[List[Double]], criterionType: List[CriterionType]): List[List[Double]] = {
     val normalizers = calculateNormalizers(alternativesRating)
 

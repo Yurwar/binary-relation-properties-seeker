@@ -1,12 +1,12 @@
 package com.yurwar
 package cp5.solver
 
-import common.strategy.multicriteria.{CriterionTypedTopsisRankingStrategy, SimpleTopsisRankingStrategy, TopsisRankingStrategy}
+import common.strategy.multicriteria.topsis.{AbstractTopsisRankingStrategy, CriterionTypedTopsisRankingStrategy, SimpleTopsisRankingStrategy}
 import common.util.{ConsolePrinter, TaskFileReader}
 
 class TopsisRankFindingSolver extends Solver {
-  val simpleTopsisRankingStrategy: TopsisRankingStrategy = new SimpleTopsisRankingStrategy
-  val criterionTypedTopsisRankingStrategy: TopsisRankingStrategy = new CriterionTypedTopsisRankingStrategy
+  val simpleTopsisRankingStrategy: AbstractTopsisRankingStrategy = new SimpleTopsisRankingStrategy
+  val criterionTypedTopsisRankingStrategy: AbstractTopsisRankingStrategy = new CriterionTypedTopsisRankingStrategy
   val taskFileReader: TaskFileReader = new TaskFileReader
 
   override def solve(): Unit = {
