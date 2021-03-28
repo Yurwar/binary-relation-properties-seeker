@@ -150,4 +150,19 @@ class TaskFileReader {
     VikorCriteria(criteriaRating, criteriaWeights, criteriaTypes, strategyWeight)
   }
 
+  def parseFuzzyRelations(fileName: String): List[FuzzyRelation] = {
+    val rawContent = readFile(fileName)
+
+    val rawMatrices = List.from(rawContent.split(RAW_CONTENT_SPLIT_REGEX))
+      .filter(str => !str.isBlank)
+
+    rawMatrices.map(rawMatrix => {
+      val lines = rawMatrix.split(LINE_SPLIT_REGEX)
+      lines.map(line => {
+
+        line.trim.split("\\s").filter(_.nonEmpty).map(_.toDouble).toList
+      }).toList
+    }).map(matrix => FuzzyRelation(matrix))
+  }
+
 }

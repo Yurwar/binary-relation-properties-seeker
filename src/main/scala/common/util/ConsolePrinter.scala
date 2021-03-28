@@ -1,7 +1,8 @@
 package com.yurwar
 package common.util
 
-import common.entity.{Criteria, MultiCriteria, Relation, TopsisCriteria}
+import common.entity.RelationProperty.RelationProperty
+import common.entity._
 
 object ConsolePrinter {
 
@@ -34,6 +35,13 @@ object ConsolePrinter {
     println
   }
 
+  def printRelationProperties(relationProperties: List[RelationProperty]): Unit = {
+    print("Relation Properties: ")
+    println(relationProperties.mkString(", "))
+
+    println
+  }
+
   def printRelationClass(relation: Relation): Unit = {
     print("Relation Class: ")
     println(relation.relationClass)
@@ -43,6 +51,14 @@ object ConsolePrinter {
 
   def printRelationPropertyViolations(relation: Relation): Unit = {
     relation.propertyViolations.foreach(v => {
+      println(s"Violation for property ${v.relationProperty} in points: ${v.violationPoints.map(t => (t._1 + 1, t._2 + 1)).mkString(", ")}")
+    })
+
+    println
+  }
+
+  def printRelationPropertyViolations(propertyViolations: List[PropertyViolation]): Unit = {
+    propertyViolations.foreach(v => {
       println(s"Violation for property ${v.relationProperty} in points: ${v.violationPoints.map(t => (t._1 + 1, t._2 + 1)).mkString(", ")}")
     })
 
